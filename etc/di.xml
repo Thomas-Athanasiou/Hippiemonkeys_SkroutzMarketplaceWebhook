@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+    Thomas Athanasiou at Hippiemonkeys
+    Copyright (c) 2022 Hippiemonkeys (https://hippiemonkeys.com)
+    Hippiemonkeys_SkroutzSmartCartWebhook
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderManagementCompositeGeneric" />
+    <virtualType name="Hippiemonkeys\SkroutzSmartCartWebhook\Helper\Config\Section\SmartCartWebhook" type="Hippiemonkeys\Core\Helper\Config\Section\Group">
+        <arguments>
+            <argument name="section" xsi:type="string">hippiemonkeys_skroutz</argument>
+            <argument name="group" xsi:type="string">smartcartwebhook</argument>
+        </arguments>
+    </virtualType>
+    <type name="Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderManagementAbstract">
+        <arguments>
+            <argument name="config" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Helper\Config\Section\SmartCartWebhook</argument>
+        </arguments>
+    </type>
+    <virtualType name="Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderManagementCompositeGeneric" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderManagementComposite">
+        <arguments>
+            <argument name="orderManagements" xsi:type="array">
+                <item name="customer" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderCustomerManagement</item>
+                <item name="invoice_details" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderInvoiceDetailsManagement</item>
+                <item name="magento_order_create" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderMagentoOrderCreateManagement</item>
+                <item name="magento_order_update" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\OrderMagentoOrderUpdateManagement</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

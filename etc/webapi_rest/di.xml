@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+    Thomas Athanasiou at Hippiemonkeys
+    Copyright (c) 2022 Hippiemonkeys (https://hippiemonkeys.com)
+    Hippiemonkeys_SkroutzSmartCartWebhook
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\Order" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\CustomerInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\Customer" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\InvoiceDetailsInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\InvoiceDetails" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\LineItemInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\LineItem" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\PickupLocationInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\PickupLocation" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\PickupWindowInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\PickupWindow" />
+    <preference for="Hippiemonkeys\SkroutzSmartCart\Api\Data\LineItemRejectionReasonInterface" type="Hippiemonkeys\SkroutzSmartCartWebhook\Model\LineItemRejectionReason" />
+
+    <type name="Hippiemonkeys\SkroutzSmartCart\Model\PickupWindowRepository">
+        <arguments>
+            <argument name="resourceModel" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\ResourceModel\PickupWindow</argument>
+        </arguments>
+    </type>
+    <type name="Hippiemonkeys\SkroutzSmartCart\Model\LineItemRejectionReasonRepository">
+        <arguments>
+            <argument name="resourceModel" xsi:type="object">Hippiemonkeys\SkroutzSmartCartWebhook\Model\ResourceModel\LineItemRejectionReason</argument>
+        </arguments>
+    </type>
+</config>
