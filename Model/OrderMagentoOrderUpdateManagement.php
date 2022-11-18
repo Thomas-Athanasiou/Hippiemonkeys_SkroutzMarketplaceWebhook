@@ -14,6 +14,7 @@
         Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
         Hippiemonkeys\Sales\Api\Helper\InvoiceHelperInterface,
         Hippiemonkeys\Sales\Api\Helper\ShipmentHelperInterface,
+        Hippiemonkeys\Sales\Api\Helper\CreditMemoHelperInterface,
         Magento\Sales\Api\OrderManagementInterface as MagentoOrderManagementInterface,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface;
 
@@ -39,12 +40,14 @@
             ConfigInterface $config,
             InvoiceHelperInterface $invoiceHelper,
             ShipmentHelperInterface $shipmentHelper,
+            CreditMemoHelperInterface $creditMemoHelper,
             MagentoOrderManagementInterface $magentoOrderManagement
         )
         {
             parent::__construct($logger, $config);
             $this->_invoiceHelper           = $invoiceHelper;
             $this->_shipmentHelper          = $shipmentHelper;
+            $this->_creditMemoHelper        = $creditMemoHelper;
             $this->_magentoOrderManagement  = $magentoOrderManagement;
         }
 
@@ -60,20 +63,34 @@
                 $config = $this->getConfig();
                 switch($order->getState())
                 {
+                    case OrderInterface::STATE_RETURNED:
                     case OrderInterface::STATE_CANCELLED:
                     case OrderInterface::STATE_REJECTED:
                     case OrderInterface::STATE_EXPIRED:
-                        $this->getMagentoOrderManagement()->cancel($magentoOrder->getId());
+                        if($magentoOrder->hasShipments())
+                        {
+                            $this->getCreditMemoHelper()->doCreditMemoRequest(
+                                $magentoOrder,
+                                false // TODO EMAIL
+                            );
+                        }
+                        else if(!$order->isCanceled())
+                        {
+                            $this->getMagentoOrderManagement()->cancel($magentoOrder->getId());
+                        }
                         break;
                     case OrderInterface::STATE_ACCEPTED:
                     case OrderInterface::STATE_DISPATCHED:
                     case OrderInterface::STATE_DELIVERED:
                         try
                         {
-                            $this->getInvoiceHelper()->doInvoiceRequest(
-                                $magentoOrder,
-                                $config->getFlag(self::CONFIG_SEND_INVOICE_EMAIL)
-                            );
+                            if(!$magentoOrder->hasInvoices())
+                            {
+                                $this->getInvoiceHelper()->doInvoiceRequest(
+                                    $magentoOrder,
+                                    $config->getFlag(self::CONFIG_SEND_INVOICE_EMAIL)
+                                );
+                            }
                         }
                         catch(\Exception $exception)
                         {
@@ -81,12 +98,15 @@
                         }
                         try
                         {
-                            $this->getShipmentHelper()->doShipmentRequest(
-                                $magentoOrder,
-                                new \Magento\Framework\DataObject(),
-                                $config->getFlag(self::CONFIG_SEND_SHIPMENT_EMAIL),
-                                false
-                            );
+                            if(!$magentoOrder->hasShipments())
+                            {
+                                $this->getShipmentHelper()->doShipmentRequest(
+                                    $magentoOrder,
+                                    new \Magento\Framework\DataObject(),
+                                    $config->getFlag(self::CONFIG_SEND_SHIPMENT_EMAIL),
+                                    false
+                                );
+                            }
                         }
                         catch(\Exception $exception)
                         {
@@ -122,6 +142,23 @@
         protected function getInvoiceHelper() : InvoiceHelperInterface
         {
             return $this->_invoiceHelper;
+        }
+
+        /**
+         * Credit Memo Helper property
+         *
+         * @var \Hippiemonkeys\Sales\Api\Helper\CreditMemoHelperInterface
+         */
+        private $_creditMemoHelper;
+
+        /**
+         * Gets Credit Memo Helper
+         *
+         * @return \Hippiemonkeys\Sales\Api\Helper\CreditMemoHelperInterface
+         */
+        protected function getCreditMemoHelper() : CreditMemoHelperInterface
+        {
+            return $this->_creditMemoHelper;
         }
 
         /**
