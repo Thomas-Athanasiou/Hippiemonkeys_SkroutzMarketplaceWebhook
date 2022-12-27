@@ -2,16 +2,16 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface;
 
     abstract class OrderManagementAbstract
@@ -20,7 +20,7 @@
         /**
          * Processes Given Order
          *
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface $order
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
          *
          * @return string
          */

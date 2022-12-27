@@ -2,21 +2,21 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface,
-        Hippiemonkeys\SkroutzSmartCart\Exception\NoSuchEntityException;
+        Hippiemonkeys\SkroutzMarketplace\Exception\NoSuchEntityException;
 
     class OrderInvoiceDetailsManagement
     extends OrderManagementAbstract
@@ -28,9 +28,9 @@
         /**
          * @param \Psr\Log\LoggerInterface $logger
          * @param \Hippiemonkeys\Core\Api\Helper\ConfigInterface $config
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface $addressRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface $invoiceDetailsRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface $orderRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface $addressRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface $invoiceDetailsRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface $orderRepository
          */
         public function __construct(
             LoggerInterface $logger,
@@ -51,13 +51,13 @@
          */
         public function processOrder(OrderInterface $order): string
         {
-            $orderRepository    = $this->getOrderRepository();
-            $invoiceDetails     = $order->getInvoiceDetails();
+            $orderRepository = $this->getOrderRepository();
+            $invoiceDetails = $order->getInvoiceDetails();
             try
             {
                 $persistentOrder = $orderRepository->getByCode( $order->getCode() );
                 $order->setId( $persistentOrder->getId() );
-                if($invoiceDetails)
+                if($invoiceDetails !== null)
                 {
                     $persistentInvoiceDetails = $persistentOrder->getInvoiceDetails();
                     if($persistentInvoiceDetails)
@@ -66,25 +66,25 @@
                     }
 
                     $address = $invoiceDetails->getAddress();
-                    if($address && $persistentInvoiceDetails)
+                    if($address !== null && $persistentInvoiceDetails !== null)
                     {
                         $persistentAddress = $persistentInvoiceDetails->getAddress();
-                        if($persistentAddress)
+                        if($persistentAddress !== null)
                         {
                             $address->setId( $persistentAddress->getId() );
                         }
                     }
                 }
             }
-            catch(NoSuchEntityException $exception)
+            catch(NoSuchEntityException)
             {
                 /** Order doesnt exist in the first place */
             }
 
-            if($invoiceDetails)
+            if($invoiceDetails !== null)
             {
                 $address = $invoiceDetails->getAddress();
-                if($address)
+                if($address !== null)
                 {
                     $this->getAddressRepository()->save($address);
                     $invoiceDetails->setAddress($address);
@@ -92,6 +92,7 @@
                 $this->getInvoiceDetailsRepository()->save($invoiceDetails);
                 $order->setInvoiceDetails($invoiceDetails);
             }
+
             $orderRepository->save($order);
 
             return $order->getCode();
@@ -108,14 +109,14 @@
         /**
          * Address Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         private $_addressRepository;
 
         /**
          * Gets Address Repository
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         protected function getAddressRepository() : AddressRepositoryInterface
         {
@@ -125,14 +126,14 @@
         /**
          * Invoice Details Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface
          */
         private $_invoiceDetailsRepository;
 
         /**
          * Gets Invoice Details Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface
          */
         protected function getInvoiceDetailsRepository() : InvoiceDetailsRepositoryInterface
         {
@@ -142,14 +143,14 @@
         /**
          * Order Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         private $_orderRepository;
 
         /**
          * Gets Order Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         protected function getOrderRepository() : OrderRepositoryInterface
         {

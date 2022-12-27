@@ -2,17 +2,17 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Api\Data;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Api\Data;
 
-    use  Hippiemonkeys\SkroutzSmartCart\Api\Data\CustomerInterface as SkroutzSmartCartCustomerInterface;
+    use  Hippiemonkeys\SkroutzMarketplace\Api\Data\CustomerInterface as SkroutzMarketplaceCustomerInterface;
 
     interface CustomerInterface
-    extends SkroutzSmartCartCustomerInterface
+    extends SkroutzMarketplaceCustomerInterface
     {
         /**
          * Gets Magento Id

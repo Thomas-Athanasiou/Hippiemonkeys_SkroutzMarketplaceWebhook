@@ -2,14 +2,14 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Api;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Api;
 
-    use Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface;
+    use Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface;
 
     interface OrderManagementInterface
     {
@@ -18,7 +18,7 @@
          *
          * @param string $event_type
          * @param string $event_time
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface $order
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
          *
          * @return string
          */
@@ -27,7 +27,7 @@
         /**
          * Process order
          *
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface $order
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
          * @return string
          */
         function processOrder(OrderInterface $order): string;

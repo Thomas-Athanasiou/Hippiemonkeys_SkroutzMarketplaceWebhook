@@ -2,16 +2,16 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface;
 
     class OrderManagementComposite
@@ -22,8 +22,13 @@
             CONFIG_ACTIVE = 'active';
 
         /**
+         * Constructor
+         *
+         * @access public
+         *
+         * @param \Psr\Log\LoggerInterface $logger
          * @param \Hippiemonkeys\Core\Api\Helper\ConfigInterface $config
-         * @param \Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface $orderManagements
+         * @param \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface[] $orderManagements
          */
         public function __construct(
             LoggerInterface $logger,
@@ -58,14 +63,14 @@
         /**
          * Order Managements property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface[]
+         * @var \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface[]
          */
         private $_orderManagements;
 
         /**
          * Gets Order Managements
          *
-         * @return \Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface[]
+         * @return \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface[]
          */
         protected function getOrderManagements(): array
         {

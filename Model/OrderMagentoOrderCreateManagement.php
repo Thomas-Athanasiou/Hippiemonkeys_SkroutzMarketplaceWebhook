@@ -2,22 +2,22 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\AcceptOptionsRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\RejectOptionsRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\AcceptOptionsRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\RejectOptionsRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
         Magento\ConfigurableProduct\Api\LinkManagementInterface,
         Magento\Store\Model\StoreManagerInterface,
         Magento\Catalog\Api\ProductRepositoryInterface,
@@ -28,33 +28,33 @@
         Magento\Quote\Model\Quote\Address\RateFactory as QuoteRateFactory,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface,
         Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType,
-        Hippiemonkeys\SkroutzSmartCart\Exception\NoSuchEntityException;
+        Hippiemonkeys\SkroutzMarketplace\Exception\NoSuchEntityException;
 
     class OrderMagentoOrderCreateManagement
     extends OrderManagementAbstract
     implements OrderManagementInterface
     {
         protected const
-            CONFIG_ACTIVE                   = 'active',
-            CONFIG_ACTIVE_CREATE_ORDER      = 'active_create_order',
-            CONFIG_DEFAULT_ORDER_COUNTRY    = 'default_order_country',
-            CONFIG_DEFAULT_ORDER_EMAIL      = 'default_order_email',
+            CONFIG_ACTIVE = 'active',
+            CONFIG_ACTIVE_CREATE_ORDER = 'active_create_order',
+            CONFIG_DEFAULT_ORDER_COUNTRY = 'default_order_country',
+            CONFIG_DEFAULT_ORDER_EMAIL = 'default_order_email',
             CONFIG_DEFAULT_ORDER_TELEPHONE  = 'default_order_telephone',
-            CONFIG_DEFAULT_ORDER_FAX        = 'default_order_fax',
-            CONFIG_NEW_ORDER_STORE_ID       = 'new_order_store_id',
-            CONFIG_NEW_ORDER_STATUS_CODE    = 'new_order_status_code',
+            CONFIG_DEFAULT_ORDER_FAX = 'default_order_fax',
+            CONFIG_NEW_ORDER_STORE_ID = 'new_order_store_id',
+            CONFIG_NEW_ORDER_STATUS_CODE = 'new_order_status_code',
 
-            FORMAT_STREET                   = '%s %u';
+            FORMAT_STREET = '%s %u';
 
         /**
          * @param \Psr\Log\LoggerInterface $logger
          * @param \Hippiemonkeys\Core\Api\Helper\ConfigInterface $config
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface $addressRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface $customerRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\InvoiceDetailsRepositoryInterface $invoiceDetailsRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\AcceptOptionsRepositoryInterface $acceptOptionsRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\RejectOptionsRepositoryInterface $rejectOptionsRepository
-         * @param \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface $orderRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface $addressRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface $customerRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\InvoiceDetailsRepositoryInterface $invoiceDetailsRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\AcceptOptionsRepositoryInterface $acceptOptionsRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\RejectOptionsRepositoryInterface $rejectOptionsRepository
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface $orderRepository
          * @param \Magento\Store\Model\StoreManagerInterface $storeManager
          * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
          * @param \Magento\Quote\Model\QuoteFactory $quoteFactory
@@ -86,19 +86,19 @@
         )
         {
             parent::__construct($logger, $config);
-            $this->_addressRepository       = $addressRepository;
-            $this->_customerRepository      = $customerRepository;
-            $this->_addressRepository       = $addressRepository;
-            $this->_orderRepository         = $orderRepository;
-            $this->_storeManager            = $storeManager;
-            $this->_productRepository       = $productRepository;
-            $this->_quoteFactory            = $quoteFactory;
-            $this->_quoteManagement         = $quoteManagement;
-            $this->_orderService            = $orderService;
-            $this->_quoteRateFactory        = $quoteRateFactory;
+            $this->_addressRepository = $addressRepository;
+            $this->_customerRepository = $customerRepository;
+            $this->_addressRepository = $addressRepository;
+            $this->_orderRepository = $orderRepository;
+            $this->_storeManager = $storeManager;
+            $this->_productRepository = $productRepository;
+            $this->_quoteFactory = $quoteFactory;
+            $this->_quoteManagement = $quoteManagement;
+            $this->_orderService = $orderService;
+            $this->_quoteRateFactory = $quoteRateFactory;
             $this->_magentoOrderRepository  = $magentoOrderRepository;
-            $this->_linkManagement          = $linkManagement;
-            $this->_configurableType        = $configurableType;
+            $this->_linkManagement = $linkManagement;
+            $this->_configurableType = $configurableType;
         }
 
         /**
@@ -114,13 +114,13 @@
                 $order->setId( $persistedOrder->getId() );
                 $order->setMagentoOrder( $persistedOrder->getMagentoOrder() );
             }
-            catch(NoSuchEntityException $exception)
+            catch(NoSuchEntityException)
             {
                 /** Order doesnt exist in the first place */
             }
 
             $magentoOrder = $order->getMagentoOrder();
-            if(!$magentoOrder)
+            if($magentoOrder === null)
             {
                 $storeId = $config->getData(self::CONFIG_NEW_ORDER_STORE_ID);
                 $store = $this->getStoreManager()->getStore( $storeId ? $storeId : null);
@@ -154,19 +154,19 @@
                     $quote->addProduct($product, $lineItem->getQuantity());
                 }
 
-                $customer           = $order->getCustomer();
-                $customerAddress    = $customer->getAddress();
-                $quoteAddressData   = [
-                    'firstname'             => $customer->getFirstName(),
-                    'lastname'              => $customer->getLastName(),
-                    'street'                => sprintf(self::FORMAT_STREET, $customerAddress->getStreetName(), $customerAddress->getStreetNumber()),
-                    'city'                  => $customerAddress->getCity(),
-                    'country_id'            => $config->getData(self::CONFIG_DEFAULT_ORDER_COUNTRY),
-                    'region'                => $customerAddress->getRegion(),
-                    'postcode'              => $customerAddress->getZip(),
-                    'telephone'             => $config->getData(self::CONFIG_DEFAULT_ORDER_TELEPHONE),
-                    'fax'                   => $config->getData(self::CONFIG_DEFAULT_ORDER_FAX),
-                    'save_in_address_book'  => 1
+                $customer = $order->getCustomer();
+                $customerAddress = $customer->getAddress();
+                $quoteAddressData = [
+                    'firstname' => $customer->getFirstName(),
+                    'lastname' => $customer->getLastName(),
+                    'street' => sprintf(self::FORMAT_STREET, $customerAddress->getStreetName(), $customerAddress->getStreetNumber()),
+                    'city' => $customerAddress->getCity(),
+                    'country_id' => $config->getData(self::CONFIG_DEFAULT_ORDER_COUNTRY),
+                    'region' => $customerAddress->getRegion(),
+                    'postcode' => $customerAddress->getZip(),
+                    'telephone' => $config->getData(self::CONFIG_DEFAULT_ORDER_TELEPHONE),
+                    'fax' => $config->getData(self::CONFIG_DEFAULT_ORDER_FAX),
+                    'save_in_address_book' => 1
                 ];
 
                 $quote->setCustomerFirstname( $customer->getFirstName() );
@@ -188,7 +188,7 @@
                 $quote->collectTotals()->save();
 
                 $magentoOrder = $this->getQuoteManagement()->submit($quote);
-                if($magentoOrder)
+                if($magentoOrder !== null)
                 {
                     $order->setMagentoOrder($magentoOrder);
                     $magentoOrder->setStatus(
@@ -213,14 +213,14 @@
         /**
          * Address Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         private $_addressRepository;
 
         /**
          * Gets Address Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         protected function getAddressRepository() : AddressRepositoryInterface
         {
@@ -230,14 +230,14 @@
         /**
          * Customer Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface
          */
         private $_customerRepository;
 
         /**
          * Gets Customer Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface
          */
         protected function getCustomerRepository() : CustomerRepositoryInterface
         {
@@ -264,14 +264,14 @@
         /**
          * Order Repository Interface
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         private $_orderRepository;
 
         /**
          * Gets Order Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         protected function getOrderRepository() : OrderRepositoryInterface
         {

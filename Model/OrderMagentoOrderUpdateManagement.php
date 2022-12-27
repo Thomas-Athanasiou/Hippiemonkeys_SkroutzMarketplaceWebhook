@@ -2,16 +2,16 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
         Hippiemonkeys\Sales\Api\Helper\InvoiceHelperInterface,
         Hippiemonkeys\Sales\Api\Helper\ShipmentHelperInterface,
         Hippiemonkeys\Sales\Api\Helper\CreditMemoHelperInterface,
@@ -23,12 +23,16 @@
     implements OrderManagementInterface
     {
         protected const
-            CONFIG_ACTIVE               = 'active',
+            CONFIG_ACTIVE = 'active',
             CONFIG_ACTIVE_UPDATE_ORDER  = 'active_update_order',
-            CONFIG_SEND_INVOICE_EMAIL   = 'send_invoice_email',
-            CONFIG_SEND_SHIPMENT_EMAIL  = 'send_shipment_email';
+            CONFIG_SEND_INVOICE_EMAIL = 'send_invoice_email',
+            CONFIG_SEND_SHIPMENT_EMAIL = 'send_shipment_email';
 
         /**
+         * Constructor
+         *
+         * @access public
+         *
          * @param \Psr\Log\LoggerInterface $logger
          * @param \Hippiemonkeys\Core\Api\Helper\ConfigInterface $config
          * @param \Hippiemonkeys\Sales\Api\Helper\InvoiceHelperInterface $invoiceHelper
@@ -45,10 +49,10 @@
         )
         {
             parent::__construct($logger, $config);
-            $this->_invoiceHelper           = $invoiceHelper;
-            $this->_shipmentHelper          = $shipmentHelper;
-            $this->_creditMemoHelper        = $creditMemoHelper;
-            $this->_magentoOrderManagement  = $magentoOrderManagement;
+            $this->_invoiceHelper = $invoiceHelper;
+            $this->_shipmentHelper = $shipmentHelper;
+            $this->_creditMemoHelper = $creditMemoHelper;
+            $this->_magentoOrderManagement = $magentoOrderManagement;
         }
 
         /**
@@ -57,7 +61,7 @@
         public function processOrder(OrderInterface $order): string
         {
             $magentoOrder = $order->getMagentoOrder();
-            if($magentoOrder)
+            if($magentoOrder !== null)
             {
                 $logger = $this->getLogger();
                 $config = $this->getConfig();

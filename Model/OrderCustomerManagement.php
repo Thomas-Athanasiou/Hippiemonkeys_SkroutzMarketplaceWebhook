@@ -2,21 +2,21 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
     use Psr\Log\LoggerInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\Data\OrderInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface,
-        Hippiemonkeys\SkroutzSmartCartWebhook\Api\OrderManagementInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
         Hippiemonkeys\Core\Api\Helper\ConfigInterface,
-        Hippiemonkeys\SkroutzSmartCart\Exception\NoSuchEntityException;
+        Hippiemonkeys\SkroutzMarketplace\Exception\NoSuchEntityException;
 
     class OrderCustomerManagement
     extends OrderManagementAbstract
@@ -28,9 +28,9 @@
         /**
           * @param \Psr\Log\LoggerInterface $logger,
           * @param \Hippiemonkeys\Core\Api\Helper\ConfigInterface $config,
-          * @param \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface $addressRepository,
-          * @param \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface $customerRepository,
-          * @param \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface $orderRepository
+          * @param \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface $addressRepository,
+          * @param \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface $customerRepository,
+          * @param \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface $orderRepository
           */
         public function __construct(
             LoggerInterface $logger,
@@ -41,9 +41,9 @@
         )
         {
             parent::__construct($logger, $config);
-            $this->_addressRepository   = $addressRepository;
-            $this->_customerRepository  = $customerRepository;
-            $this->_orderRepository     = $orderRepository;
+            $this->_addressRepository = $addressRepository;
+            $this->_customerRepository = $customerRepository;
+            $this->_orderRepository = $orderRepository;
         }
 
         /**
@@ -52,7 +52,7 @@
         public function processOrder(OrderInterface $order): string
         {
             $customer = $order->getCustomer();
-            if($customer)
+            if($customer !== null)
             {
                 $address = $customer->getAddress();
                 $customerRepository = $this->getCustomerRepository();
@@ -61,14 +61,14 @@
                     $persistentCustomer = $customerRepository->getBySkroutzId(
                         $customer->getSkroutzId()
                     );
-                    $customer->setLocalId( $persistentCustomer->getLocalId() );
+                    $customer->setId( $persistentCustomer->getId() );
                     $persistentAddress = $persistentCustomer->getAddress();
-                    if($persistentAddress && $address)
+                    if($persistentAddress !== null && $address !== null)
                     {
                         $address->setId( $persistentAddress->getId() );
                     }
                 }
-                catch(NoSuchEntityException $exception)
+                catch(NoSuchEntityException)
                 {
                     /** Customer doesnt exist in the first place */
                 }
@@ -108,14 +108,14 @@
         /**
          * Address Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         private $_addressRepository;
 
         /**
          * Gets Address Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\AddressRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\AddressRepositoryInterface
          */
         protected function getAddressRepository() : AddressRepositoryInterface
         {
@@ -125,14 +125,14 @@
         /**
          * Customer Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface
          */
         private $_customerRepository;
 
         /**
          * Gets Customer Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\CustomerRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\CustomerRepositoryInterface
          */
         protected function getCustomerRepository() : CustomerRepositoryInterface
         {
@@ -142,14 +142,14 @@
         /**
          * Order Repository property
          *
-         * @var \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @var \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         private $_orderRepository;
 
         /**
          * Gets Order Repository
          *
-         * @return \Hippiemonkeys\SkroutzSmartCart\Api\OrderRepositoryInterface
+         * @return \Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface
          */
         protected function getOrderRepository() : OrderRepositoryInterface
         {

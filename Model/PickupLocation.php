@@ -2,14 +2,14 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model;
 
-    use Hippiemonkeys\SkroutzSmartCart\Model\PickupLocation as AbstractModel;
+    use Hippiemonkeys\SkroutzMarketplace\Model\PickupLocation as AbstractModel;
 
     class PickupLocation
     extends AbstractModel
@@ -21,14 +21,7 @@
          */
         public function setId($id)
         {
-            if(is_numeric($id))
-            {
-                $this->setLocalId((int) $id);
-            }
-            else
-            {
-                $this->setSkroutzId((string) $id);
-            }
+            $this->setSkroutzId((string) $id);
         }
     }
 ?>

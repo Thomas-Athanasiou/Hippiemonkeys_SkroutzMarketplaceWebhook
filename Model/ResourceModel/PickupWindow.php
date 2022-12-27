@@ -2,17 +2,17 @@
     /**
      * @author Thomas Athanasiou at Hippiemonkeys | @Thomas-Athanasiou
      * @copyright Copyright (c) 2022 Hippiemonkeys Web Inteligence EE (https://hippiemonkeys.com)
-     * @package Hippiemonkeys_SkroutzSmartCartWebhook
+     * @package Hippiemonkeys_SkroutzMarketplaceWebhook
      */
 
     declare(strict_types=1);
 
-    namespace Hippiemonkeys\SkroutzSmartCartWebhook\Model\ResourceModel;
+    namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Model\ResourceModel;
 
-    use Hippiemonkeys\SkroutzSmartCart\Model\ResourceModel\PickupWindow as AbstractDb;
+    use Hippiemonkeys\SkroutzMarketplace\Model\ResourceModel\PickupWindow as AbstractResource;
 
     class PickupWindow
-    extends AbstractDb
+    extends AbstractResource
     {
         /**
          * @inheritdoc
