@@ -5,8 +5,8 @@
     Hippiemonkeys_SkroutzMarketplaceWebhook
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-	<route method="POST" url="/V1/hippiemonkeys-skroutz-smart-cart-webhook/order">
-		<service class="Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface" method="processEvent" />
+	<route method="POST" url="/V1/hippiemonkeys-skroutz-marketplace-webhook/order">
+		<service class="Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface" method="processWebhookEvent" />
 		<resources>
 			<resource ref="anonymous"/>
 		</resources>

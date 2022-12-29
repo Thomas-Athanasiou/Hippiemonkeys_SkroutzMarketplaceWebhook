@@ -7,21 +7,16 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <hippiemonkeys_skroutz>
-            <smartcartwebhook>
-                <active>1</active>
-                <active_create_order>0</active_create_order>
-                <active_update_order>0</active_update_order>
+            <marketplace>
                 <send_invoice_email>0</send_invoice_email>
                 <send_shipment_email>0</send_shipment_email>
                 <default_order_email>thomas@hippiemonkeys.com</default_order_email>
                 <default_order_country>GR</default_order_country>
                 <default_order_telephone>0000000000</default_order_telephone>
                 <default_order_fax>0000000000</default_order_fax>
-                <save_customer_data>1</save_customer_data>
-                <save_invoice_details_data>1</save_invoice_details_data>
                 <new_order_store_id>0</new_order_store_id>
                 <new_order_status_code>pending</new_order_status_code>
-            </smartcartwebhook>
+            </marketplace>
         </hippiemonkeys_skroutz>
     </default>
 </config>
