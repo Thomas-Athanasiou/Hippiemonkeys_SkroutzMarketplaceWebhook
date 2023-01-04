@@ -19,21 +19,32 @@
 
     class WebhookLineItemsPlugin
     {
-        public function beforeProcessWebhookEvent(
-            OrderManagementInterface $orderManagement,
-            string $event_type,
-            string $event_time,
-            OrderInterface $order
-        )
+        /**
+         * Before Process Webhook Event
+         *
+         * @access public
+         *
+         * @param \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface $orderManagement
+         * @param string $eventType
+         * @param string $eventTime
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
+         *
+         * @return mixed[]
+         */
+        public function beforeProcessWebhookEvent(OrderManagementInterface $orderManagement, string $eventType, string $eventTime, OrderInterface $order): array
         {
             $lineItems = $order->getLineItems();
             foreach ($lineItems as $lineItem)
             {
-                $lineItem->setSkroutzId((string) $lineItem->getId());
-                $lineItem->setId(null);
+                $id = (string) $lineItem->getId();
+                if($id !== '')
+                {
+                    $lineItem->setSkroutzId($id);
+                    $lineItem->setId(null);
+                }
             }
 
-            return [$event_type, $event_time, $order];
+            return [$eventType, $eventTime, $order];
         }
     }
 ?>

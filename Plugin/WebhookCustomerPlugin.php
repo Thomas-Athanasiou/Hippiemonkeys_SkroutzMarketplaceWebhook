@@ -19,21 +19,32 @@
 
     class WebhookCustomerPlugin
     {
-        public function beforeProcessWebhookEvent(
-            OrderManagementInterface $orderManagement,
-            string $event_type,
-            string $event_time,
-            OrderInterface $order
-        )
+        /**
+         * Before Process Webhook Event
+         *
+         * @access public
+         *
+         * @param \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface $orderManagement
+         * @param string $eventType
+         * @param string $eventTime
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
+         *
+         * @return mixed[]
+         */
+        public function beforeProcessWebhookEvent(OrderManagementInterface $orderManagement, string $eventType, string $eventTime, OrderInterface $order): array
         {
             $customer = $order->getCustomer();
             if($customer !== null)
             {
-                $customer->setSkroutzId((string) $customer->getId());
-                $customer->setId(null);
+                $id = (string) $customer->getId();
+                if($id !== '')
+                {
+                    $customer->setSkroutzId($id);
+                    $customer->setId(null);
+                }
             }
 
-            return [$event_type, $event_time, $order];
+            return [$eventType, $eventTime, $order];
         }
     }
 ?>

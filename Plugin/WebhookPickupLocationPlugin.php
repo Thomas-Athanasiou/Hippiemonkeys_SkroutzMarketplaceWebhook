@@ -19,21 +19,36 @@
 
     class WebhookPickupLocationPlugin
     {
-        public function beforeProcessWebhookEvent(
-            OrderManagementInterface $orderManagement,
-            string $event_type,
-            string $event_time,
-            OrderInterface $order
-        )
+        /**
+         * Before Process Webhook Event
+         *
+         * @access public
+         *
+         * @param \Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface $orderManagement
+         * @param string $eventType
+         * @param string $eventTime
+         * @param \Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface $order
+         *
+         * @return mixed[]
+         */
+        public function beforeProcessWebhookEvent(OrderManagementInterface $orderManagement, string $eventType, string $eventTime, OrderInterface $order): array
         {
-            $pickupLocations = $order->getAcceptOptions()->getPickupLocation();
-            foreach ($pickupLocations as $pickupLocation)
+            $acceptOptions = $order->getAcceptOptions();
+            if($acceptOptions !== null)
             {
-                $pickupLocation->setSkroutzId((string) $pickupLocation->getId());
-                $pickupLocation->setId(null);
+                $pickupLocations = $acceptOptions->getPickupLocation();
+                foreach ($pickupLocations as $pickupLocation)
+                {
+                    $id = (string) $pickupLocation->getId();
+                    if($id !== '')
+                    {
+                        $pickupLocation->setSkroutzId($id);
+                        $pickupLocation->setId(null);
+                    }
+                }
             }
 
-            return [$event_type, $event_time, $order];
+            return [$eventType, $eventTime, $order];
         }
     }
 ?>

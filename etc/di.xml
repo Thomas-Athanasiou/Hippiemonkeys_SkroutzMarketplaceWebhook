@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+    Thomas Athanasiou at Hippiemonkeys
+    Copyright (c) 2022 Hippiemonkeys (https://hippiemonkeys.com)
+    Hippiemonkeys_SkroutzMarketplaceWebhook
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Hippiemonkeys\SkroutzMarketplaceWebhook\Model\OrderManagement">
+        <plugin name="hippiemonkeys_skroutzmarketplacewebhook_customer" type="Hippiemonkeys\SkroutzMarketplaceWebhook\Plugin\WebhookCustomerPlugin" sortOrder="0" disabled="false" />
+        <plugin name="hippiemonkeys_skroutzmarketplacewebhook_lineitems" type="Hippiemonkeys\SkroutzMarketplaceWebhook\Plugin\WebhookLineItemsPlugin" sortOrder="10" disabled="false" />
+        <plugin name="hippiemonkeys_skroutzmarketplacewebhook_order" type="Hippiemonkeys\SkroutzMarketplaceWebhook\Plugin\WebhookOrderPlugin" sortOrder="20" disabled="false" />
+        <plugin name="hippiemonkeys_skroutzmarketplacewebhook_pickuplocation" type="Hippiemonkeys\SkroutzMarketplaceWebhook\Plugin\WebhookPickupLocationPlugin" sortOrder="30" disabled="false" />
+    </type>
+</config>
