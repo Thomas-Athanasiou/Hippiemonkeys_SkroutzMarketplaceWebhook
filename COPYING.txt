@@ -1,4 +1,4 @@
-Copyright © 2022-present Hippiemonkeys Web Inteligence EE
+Copyright © 2022-present Hippiemonkeys Web Intelligence EE
 
 This file is part of Hippiemonkeys/SkroutzMarketplaceWebhook.
 
