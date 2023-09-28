@@ -14,10 +14,10 @@
 
     namespace Hippiemonkeys\SkroutzMarketplaceWebhook\Plugin;
 
-    use Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
+    use Magento\Framework\Exception\NoSuchEntityException,
+        Hippiemonkeys\SkroutzMarketplaceWebhook\Api\OrderManagementInterface,
         Hippiemonkeys\SkroutzMarketplace\Api\Data\OrderInterface,
-        Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface,
-        Hippiemonkeys\SkroutzMarketplace\Exception\NoSuchEntityException;
+        Hippiemonkeys\SkroutzMarketplace\Api\OrderRepositoryInterface;
 
     class WebhookOrderPlugin
     {
